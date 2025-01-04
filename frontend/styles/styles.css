@@ -1,0 +1,61 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+  }
+  #challenge {
+    margin: 20px auto;
+    width: 80%;
+  }
+  textarea {
+    width: 100%;
+    margin: 10px 0;
+  }
+  
+  #typing-area {
+    position: relative;
+    z-index: 1; /* Asegúrate de que no esté siendo cubierto por otros elementos */
+  
+    border: 1px solid red; /* Temporariamente, para ver el área */
+  }
+  
+  
+  #code-sample {
+    font-family: monospace;
+    color: #888;
+  }
+
+  #code-placeholder {
+    font-family: 'Courier New', monospace; /* Estilo de fuente para código */
+    font-size: 16px; /* Ajusta el tamaño de la fuente */
+    color: #333; /* Color de texto para el código */
+    background-color: #f4f4f4; /* Fondo claro */
+    padding: 5px; /* Un poco de espacio alrededor del texto */
+    display: inline-block; /* Asegura que el código no se desborde */
+    white-space: pre-wrap; /* Mantén los saltos de línea */
+    word-wrap: break-word; /* Rompe las palabras largas */
+  }
+  
+  
+  #typing-area span {
+    color: #000;
+  }
+  
+  #cursor {
+    position: absolute;
+    background-color: black;
+    width: 2px;
+    height: 20px;
+    animation: blink 0.7s step-end infinite;
+  }
+  
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  #user-input {
+    border: 2px solid blue; /* Temporariamente, para asegurarte de que el input esté visible */
+  }
+  
