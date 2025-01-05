@@ -1,61 +1,146 @@
+/* Estilos generales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 20px;
-  }
-  #challenge {
-    margin: 20px auto;
-    width: 80%;
-  }
-  textarea {
-    width: 100%;
-    margin: 10px 0;
-  }
-  
-  #typing-area {
-    position: relative;
-    z-index: 1; /* Asegúrate de que no esté siendo cubierto por otros elementos */
-  
-    border: 1px solid red; /* Temporariamente, para ver el área */
-  }
-  
-  
-  #code-sample {
-    font-family: monospace;
-    color: #888;
-  }
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+  text-align: center;
+  overflow: hidden; /* Evitar que se desborde por el contenido */
+}
 
-  #code-placeholder {
-    font-family: 'Courier New', monospace; /* Estilo de fuente para código */
-    font-size: 16px; /* Ajusta el tamaño de la fuente */
-    color: #333; /* Color de texto para el código */
-    background-color: #f4f4f4; /* Fondo claro */
-    padding: 5px; /* Un poco de espacio alrededor del texto */
-    display: inline-block; /* Asegura que el código no se desborde */
-    white-space: pre-wrap; /* Mantén los saltos de línea */
-    word-wrap: break-word; /* Rompe las palabras largas */
-  }
-  
-  
-  #typing-area span {
-    color: #000;
-  }
-  
-  #cursor {
-    position: absolute;
-    background-color: black;
-    width: 2px;
-    height: 20px;
-    animation: blink 0.7s step-end infinite;
-  }
-  
-  @keyframes blink {
-    0% { opacity: 1; }
-    50% { opacity: 0; }
-    100% { opacity: 1; }
-  }
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  display: inline-block;
+  width: 100%;
+  max-width: 800px;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 0.15em solid #fff; /* Cursor de tipeo */
+  animation: 
+    typing 4s steps(70) 0.5s forwards, 
+    cursor 0.95s step-end infinite alternate;
+}
 
-  #user-input {
-    border: 2px solid blue; /* Temporariamente, para asegurarte de que el input esté visible */
+
+
+@keyframes typing {
+  from {
+    width: 0;
   }
-  
+  to {
+    width: 100%; /* Completa el texto */
+  }
+}
+
+@keyframes cursor {
+  50% {
+    border-color: transparent; /* Parpadeo del cursor */
+  }
+}
+
+/* Resto de los estilos */
+#challenge {
+  width: 100%;
+  max-width: 800px;
+  margin: 20px;
+}
+
+#code-sample-visible {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  background-color: #2e2e2e;
+  color: #8a8a8a;
+  padding: 10px;
+  border-radius: 5px;
+  min-height: 200px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+textarea#code-sample {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2rem;
+  color: #f0f0f0;
+  background-color: #333;
+  border: 1px solid #666;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  min-height: 300px; /* Aumentar el tamaño */
+  resize: none;
+  outline: none;
+  margin-top: -210px; /* Ajustar para que se solape bien con el código visible */
+  text-align: left;
+  white-space: pre-wrap; /* Mantener el formato */
+}
+
+textarea#code-sample:focus {
+  border-color: #007BFF;
+}
+
+p#result {
+  font-size: 1.5rem;
+  margin-top: 20px;
+}
+
+/* Efecto de luz en texto correcto */
+.correct-feedback {
+  background-color: rgba(76, 175, 80, 0.5); /* Verde claro */
+}
+
+.incorrect-feedback {
+  background-color: rgba(244, 67, 54, 0.5); /* Rojo claro */
+}
+
+
+#timer {
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Estilo general del overlay */
+#completion-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden; /* Inicialmente oculto */
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s linear; /* Animación suave */
+}
+
+/* Estilo del modal de finalización */
+#completion-modal {
+  background-color: #37ffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Cuando el overlay y el modal deben estar visibles */
+#completion-overlay:not(.hidden) {
+  visibility: visible;
+  opacity: 1;
+}
