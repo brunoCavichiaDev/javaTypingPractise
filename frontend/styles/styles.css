@@ -1,0 +1,244 @@
+/* Estilos generales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 95%;
+
+  text-align: center;
+  overflow: hidden; /* Evitar que se desborde por el contenido */
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra interna */
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin: 15px;
+  display: inline-block; /* Asegura que el contenedor se ajuste al contenido */
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  color: transparent; /* Hacemos el texto transparente para el gradiente */
+  border-right: 0.15em solid #fff; /* Cursor de tipeo */
+  animation: 
+    typing 4s steps(70) 0.5s forwards, /* Animación typing */
+    cursor 0.95s step-end infinite alternate; /* Animación cursor */
+}
+
+h1::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #ff0000, #ff7300, #ffeb3b); /* Fondo de gradiente */
+  background-size: 200% 100%; /* Necesario para el movimiento */
+  background-position: 100% 0;
+  -webkit-background-clip: text; /* Para navegadores WebKit */
+  background-clip: text; /* Para Firefox */
+  animation: shine 30s linear infinite; /* Animación shine */
+  color: transparent; /* Aseguramos que el texto sea transparente */
+}
+
+/* Animación de shine */
+@keyframes shine {
+  0% {
+    background-position: 200% 0;
+  }
+  50% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Animaciones de texto */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%; /* El ancho se ajusta al contenido del texto */
+  }
+}
+
+@keyframes cursor {
+  50% {
+    border-color: transparent; /* Parpadeo del cursor */
+  }
+}
+
+
+/* Resto de los estilos */
+#challenge {
+  width: 100%;
+  max-width: 800px;
+  padding: 10px;
+  background: linear-gradient(145deg, #2a2a2a, #383838);
+  border-radius: 10px;
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4); /* Sombra externa para profundidad */
+}
+
+#code-sample-visible {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  background-color: #2e2e2e;
+  color: #8a8a8a;
+  padding: 15px;
+  border-radius: 8px;
+  min-height: 200px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin-bottom: 10px;
+  text-align: left;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Sombra para profundidad */
+}
+
+textarea#code-sample {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2rem;
+  color: #f0f0f0;
+  background-color: #333;
+  border: 1px solid #666;
+  border-radius: 8px;
+  padding: 12px;
+  width: 100%;
+  min-height: 300px; /* Aumentar el tamaño */
+  resize: none;
+  outline: none;
+  margin-top: -210px; /* Ajustar para que se solape bien con el código visible */
+  text-align: left;
+  white-space: pre-wrap; /* Mantener el formato */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4); /* Sombra para profundidad */
+}
+
+textarea#code-sample:focus {
+  border-color: #007BFF;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* Sombra cuando está enfocado */
+}
+
+p#result {
+  font-size: 1.5rem;
+  margin-top: 40px; /* Aumentar el margen superior para separarlo del contenido anterior */
+  margin-bottom: 20px; /* Asegurar que haya espacio debajo del mensaje */
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6); /* Sombra para mejor legibilidad */
+}
+
+/* Efecto de luz en texto correcto */
+.correct-feedback {
+  background-color: rgba(76, 175, 80, 0.5); /* Verde claro */
+  box-shadow: 0 4px 6px rgba(76, 175, 80, 0.3); /* Sombra para profundidad */
+}
+
+.incorrect-feedback {
+  background-color: rgba(244, 67, 54, 0.5); /* Rojo claro */
+  box-shadow: 0 4px 6px rgba(244, 67, 54, 0.3); /* Sombra para profundidad */
+}
+
+#timer {
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #ffeb3b; /* Color dorado para el temporizador */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Sombra para darle profundidad */
+}
+
+/* Estilo general del overlay */
+#completion-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden; /* Inicialmente oculto */
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s linear; /* Animación suave */
+}
+
+/* Estilo del modal de finalización */
+#completion-modal {
+  background-color: #37ffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra para profundidad */
+  text-align: center;
+  max-width: 90%;
+  transition: transform 0.3s ease-out;
+  transform: scale(0.9);
+}
+
+#completion-modal.show {
+  transform: scale(1); /* Animación de aparición */
+}
+
+/* Cuando el overlay y el modal deben estar visibles */
+#completion-overlay:not(.hidden) {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Sombra para el hover de botones */
+button {
+  background-color: #333;
+  color: #fff;
+  border: 2px solid #444;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  background-color: #007BFF;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.5); /* Sombra cuando se pasa el ratón */
+}
+
+/* Contenedor independiente del mensaje de éxito/error */
+/* Contenedor independiente del mensaje de éxito/error */
+
+/* Animación de éxito (Correcto) */
+.correct-feedback {
+  color: rgb(95, 230, 95);
+  animation: fadeInOut 2s ease-out forwards;
+}
+
+/* Mensaje de error (Incorrecto) */
+.error-feedback {
+  color: yellow;
+  animation: fadeInOut 2s ease-out forwards;
+}
+
+
+/* Animación de entrada y salida para el éxito */
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+
+
