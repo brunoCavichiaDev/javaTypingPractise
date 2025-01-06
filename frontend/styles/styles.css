@@ -10,7 +10,7 @@ body {
   justify-content: center;
   align-items: center;
   height: max-content;
-
+  transition: background-color 0.3s ease, color 0.3s ease;
   text-align: center;
   overflow: hidden; /* Evitar que se desborde por el contenido */
 
@@ -18,7 +18,73 @@ body {
   
 }
 
+@media (max-width: 600px) {
+  body {
+    font-size: 14px; /* Reducir el tamaño de fuente */
+  }
 
+  #completion-modal {
+    width: 90%; /* Hacer el modal más pequeño */
+    padding: 15px;
+  }
+
+  #code-sample-visible {
+    font-size: 14px;
+    white-space: pre-wrap; /* Permite el salto de línea en el código */
+  }
+
+  #timer {
+    font-size: 2rem;
+  }
+
+  .result, .correct-feedback {
+    font-size: 14px; /* Reducir el tamaño del texto */
+  }
+
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #toggleMode {
+    font-size: 16px;
+    padding: 10px;
+    margin-top: 10px;
+  }
+
+  #continue-btn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+  }
+}
+
+/* Media Query para pantallas medianas (tablets) */
+@media (max-width: 768px) {
+  #completion-modal {
+    width: 80%;
+  }
+
+  #code-sample-visible {
+    font-size: 16px;
+  }
+
+  #timer {
+    font-size: 2.5rem;
+  }
+}
+
+/* Estilos para pantallas grandes (desktops) */
+@media (min-width: 769px) {
+  #completion-modal {
+    width: 50%;
+  }
+
+  #timer {
+    font-size: 3rem;
+  }
+}
 
 h1 {
   font-size: 2.5rem;
@@ -41,7 +107,7 @@ h1::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #ff0000, #ff7300, #ffeb3b); /* Fondo de gradiente */
+  background: linear-gradient(90deg, #ffffffa4, #acaaaaa4, #ffeb3b); /* Fondo de gradiente */
   background-size: 200% 100%; /* Necesario para el movimiento */
   background-position: 100% 0;
   -webkit-background-clip: text; /* Para navegadores WebKit */
@@ -49,6 +115,8 @@ h1::before {
   animation: shine 30s linear infinite; /* Animación shine */
   color: transparent; /* Aseguramos que el texto sea transparente */
 }
+
+
 
 /* Animación de shine */
 @keyframes shine {
@@ -125,10 +193,8 @@ textarea#code-sample {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4); /* Sombra para profundidad */
 }
 
-textarea#code-sample:focus {
-  border-color: #007BFF;
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* Sombra cuando está enfocado */
-}
+
+
 
 p#result {
   font-size: 1.5rem;
@@ -163,6 +229,7 @@ p#result {
 /* Estilo general del overlay */
 #completion-overlay {
   position: fixed;
+  z-index: 1000;
   top: 0;
   left: 0;
   width: 100%;
@@ -178,7 +245,9 @@ p#result {
 
 /* Estilo del modal de finalización */
 #completion-modal {
-  background-color: #37ffff;
+  background-color: rgb(48, 48, 47);
+  z-index: 1001;
+  color: yellow;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra para profundidad */
@@ -186,6 +255,7 @@ p#result {
   max-width: 90%;
   transition: transform 0.3s ease-out;
   transform: scale(0.9);
+  position: initial;
 }
 
 #completion-modal.show {
@@ -209,10 +279,7 @@ button {
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-button:hover {
-  background-color: #007BFF;
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.5); /* Sombra cuando se pasa el ratón */
-}
+
 
 /* Contenedor independiente del mensaje de éxito/error */
 /* Contenedor independiente del mensaje de éxito/error */
@@ -343,3 +410,31 @@ body.light-mode #toggleMode:hover {
 div.CodeMirror.cm-s-dracula{
   height: 250px;
 }
+
+
+
+
+
+.correct {
+  color: green;
+  font-size: 12px;
+  font-family: 'Poppins', sans-serif; /* Fuente más linda */
+}
+
+.incorrect {
+  color: red;
+  text-decoration:none;
+  font-family: 'Poppins', sans-serif; /* Fuente más linda */
+  font-size: 12px;
+ 
+
+
+
+}
+
+
+
+
+
+
+

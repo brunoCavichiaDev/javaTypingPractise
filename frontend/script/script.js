@@ -25,6 +25,24 @@ document.addEventListener("DOMContentLoaded", function () {
     return code.trim().replace(/\s+/g, " ").replace(/\r/g, "");
   }
 
+  // NUEVA FUNCIÓN: Resaltar caracteres incorrectos
+  function highlightErrors(sample, userInput) {
+    let highlighted = "";
+    for (let i = 0; i < sample.length; i++) {
+      if (sample[i] === userInput[i]) {
+        highlighted += `<span class="correct">${sample[i]}</span>`;
+      } else {
+        highlighted += `<span class="incorrect">${userInput[i] || " "}</span>`;
+      }
+    }
+    if (userInput.length < sample.length) {
+      for (let j = userInput.length; j < sample.length; j++) {
+        highlighted += `<span class="incorrect">${sample[j]}</span>`;
+      }
+    }
+    return highlighted;
+  }
+
   // Intentar cargar el código desde el Gist con un número máximo de intentos
   function loadCodeFragment() {
     if (loadingGist || retries <= 0) return; // Evitar múltiples peticiones al mismo tiempo
@@ -79,6 +97,11 @@ document.addEventListener("DOMContentLoaded", function () {
               return;
             }
 
+            // INTEGRACIÓN: Resaltar caracteres incorrectos
+            const highlightedHTML = highlightErrors(cleanedCodeSample, cleanedUserInput);
+            resultElement.innerHTML = highlightedHTML; // Mostrar el resultado con resaltado
+            resultElement.style.visibility = 'visible';
+
             if (cleanedUserInput === cleanedCodeSample) {
               resultElement.innerText = "¡Correcto! Bien hecho.";
               resultElement.classList.add('correct-feedback'); // Añadir clase para el éxito
@@ -90,16 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 resultElement.classList.remove('correct-feedback'); // Eliminar la clase después de la animación
                 resultElement.style.visibility = 'hidden'; // Ocultar el contenedor después de la animación
               }, 2000); // Esperar 2 segundos antes de quitar la clase
-            } else {
-              resultElement.innerText = "Hay errores. ¡Inténtalo de nuevo!";
-              resultElement.classList.remove('correct-feedback'); // Eliminar la clase de éxito
-              resultElement.classList.add('error-feedback'); // Añadir clase de error (amarillo)
-              resultElement.style.visibility = 'visible'; // Mostrar el contenedor de resultados
-
-              setTimeout(() => {
-                resultElement.classList.remove('error-feedback'); // Eliminar la clase de error después de 2 segundos
-                resultElement.style.visibility = 'hidden'; // Ocultar el contenedor de resultados
-              }, 2000); 
             }
           });
         } else {
@@ -123,6 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function startTimer() {
     if (timerModeSelect.value === "timed") { // Solo iniciar el temporizador si está en el modo cronometrado
       timerElement.textContent = timer;
+      startTime = Date.now();
 
       timerInterval = setInterval(() => {
         timer--;
@@ -150,14 +164,9 @@ document.addEventListener("DOMContentLoaded", function () {
     startTimer();
   }
 
+  // Restablecer WPM
   function calculateWPM() {
     const elapsedTime = (Date.now() - startTime) / 60000;
-    
-    if (elapsedTime <= 0) {
-      console.log("Elapsed time is too small for WPM calculation.");
-      return;
-    }
-
     const editorContent = codeMirror.getValue().trim();
     const sampleWords = cleanCode(selectedLines).split(/\s+/);
     const userWords = cleanCode(editorContent).split(/\s+/);
@@ -209,34 +218,37 @@ document.addEventListener("DOMContentLoaded", function () {
     resetTimer();
   });
 
-  loadCodeFragment();
+  loadCodeFragment(); // Cargar el fragmento de código al inicio
   startTimer(); // Inicializamos el temporizador al cargar
-});
 
-const toggleButton = document.getElementById("toggleMode");
-const body = document.body;
+  // Cambio de modo claro/oscuro
+  const toggleButton = document.getElementById("toggleMode");
+  const body = document.body;
 
-// Verificar si el modo claro está guardado en localStorage
-if (localStorage.getItem("darkMode") === "disabled") {
-  body.classList.add("light-mode"); // Activar modo claro por defecto
-  toggleButton.textContent = "Activar Modo Oscuro"; // Cambiar texto del botón
-} else {
-  body.classList.add("dark-mode"); // Activar modo oscuro por defecto
-  toggleButton.textContent = "Activar Modo Claro"; // Cambiar texto del botón
-}
-
-toggleButton.addEventListener("click", function () {
-  // Alternar la clase "dark-mode" y "light-mode"
-  if (body.classList.contains("dark-mode")) {
-    body.classList.remove("dark-mode");
-    body.classList.add("light-mode");
-    toggleButton.textContent = "Activar Modo Oscuro"; // Texto para el modo claro
-    localStorage.setItem("darkMode", "disabled"); // Guardar preferencia del modo claro
+  // Verificar si el modo claro está guardado en localStorage
+  if (localStorage.getItem("darkMode") === "disabled") {
+    body.classList.add("light-mode"); // Activar modo claro por defecto
+    toggleButton.textContent = "Activar Modo Oscuro"; // Cambiar texto del botón
   } else {
-    body.classList.remove("light-mode");
-    body.classList.add("dark-mode");
-    toggleButton.textContent = "Activar Modo Claro"; // Texto para el modo oscuro
-    localStorage.setItem("darkMode", "enabled"); // Guardar preferencia del modo oscuro
+    body.classList.add("dark-mode"); // Activar modo oscuro por defecto
+    toggleButton.textContent = "Activar Modo Claro"; // Cambiar texto del botón
   }
+
+  toggleButton.addEventListener("click", function () {
+    // Alternar la clase "dark-mode" y "light-mode"
+    if (body.classList.contains("dark-mode")) {
+      body.classList.remove("dark-mode");
+      body.classList.add("light-mode");
+      toggleButton.textContent = "Activar Modo Oscuro"; // Texto para el modo claro
+      localStorage.setItem("darkMode", "disabled"); // Guardar preferencia del modo claro
+    } else {
+      body.classList.remove("light-mode");
+      body.classList.add("dark-mode");
+      toggleButton.textContent = "Activar Modo Claro"; // Texto para el modo oscuro
+      localStorage.setItem("darkMode", "enabled"); // Guardar preferencia del modo oscuro
+    }
+  });
 });
+
+
 
