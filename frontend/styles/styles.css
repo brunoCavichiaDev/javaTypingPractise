@@ -87,12 +87,11 @@ h1 {
   position: relative;
   color: transparent;
   border-right: 0.15em solid #fff;
-  animation: 
-    typing 4s steps(70) 0.5s forwards,
-    cursor 0.95s step-end infinite alternate;
+  animation: typing 3s steps(40, end) forwards, cursor 0.90s step-end infinite;
 }
 
-h1::before {
+/* Modo oscuro */
+body.dark-mode h1::before {
   content: attr(data-text);
   position: absolute;
   top: 0;
@@ -108,6 +107,46 @@ h1::before {
   color: transparent;
 }
 
+/* Modo claro */
+body.light-mode h1::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #000000a4, #acaaaaa4, #e23bff);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shine 30s linear infinite;
+  color: transparent;
+}
+
+/* Modo claro: personalización del cursor */
+body.light-mode h1 {
+  border-right: 0.15em solid #000; /* Cursor negro en el modo claro */
+}
+
+/* Cursor parpadeante */
+@keyframes cursor {
+  50% {
+    border-color: transparent;
+  }
+}
+
+/* Animación de tipeo */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Gradiente animado */
 @keyframes shine {
   0% {
     background-position: 200% 0;
@@ -120,20 +159,6 @@ h1::before {
   }
 }
 
-@keyframes typing {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
-
-@keyframes cursor {
-  50% {
-    border-color: transparent;
-  }
-}
 
 #challenge {
   width: 100%;
@@ -291,21 +316,52 @@ button {
 }
 
 #timerMode {
+  position: relative; 
   padding: 10px;
   font-size: 16px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  background-color: #333;
+  background-color: rgba(51, 51, 51, 0.8); 
   color: yellow;
   width: 100%;
   box-sizing: border-box;
+  opacity: 0.7; 
+  transition: opacity 0.3s ease; 
+}
+
+#timerMode::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background-color: rgba(51, 51, 51, 0.8); 
+  z-index: -1; 
+  opacity: 0; 
+  transition: opacity 0.3s ease; 
+}
+
+#timerMode:hover {
+  opacity: 1; 
+}
+
+#timerMode:hover::before {
+  opacity: 1; 
 }
 
 #timerMode:focus {
   outline: none;
   border-color: #6c5ce7;
-  background-color: #444;
+  background-color: rgba(51, 51, 51, 1); 
+  opacity: 1; 
 }
+
+#timerMode:not(:hover)::before {
+  opacity: 0.7; 
+}
+
 
 #continue-btn {
   margin-top: 20px;
@@ -378,3 +434,44 @@ div.CodeMirror.cm-s-dracula{
   font-family: 'Poppins', sans-serif;
   font-size: 12px;
 }
+
+#credit {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  font-size: 14px;
+  color: #fff;
+  background-color: transparent; /* Fondo transparente */
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Animación para color de fondo y texto */
+}
+
+#credit a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.8); /* Color blanco con algo de transparencia */
+}
+
+#credit a:visited {
+  color: rgba(255, 255, 255, 0.8); /* El mismo color para los enlaces visitados */
+}
+
+#credit:hover {
+  background-color: #6c5ce7; /* Color de fondo cuando se pasa el mouse */
+}
+
+#credit:hover a {
+  color: #fff; /* Cambiar el color del texto cuando se pasa el mouse */
+}
+
+/* Estilo para el modo claro */
+body.light-mode #credit a {
+  color: #000; /* Color de texto negro en modo claro */
+}
+
+/* Estilo para el modo oscuro (si quieres mantenerlo también) */
+body.dark-mode #credit a {
+  color: #fff; /* Color de texto blanco en modo oscuro */
+}
+
