@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const resultElement = document.getElementById("result");
   const continueButton = document.getElementById("continue-btn");
   const wpmResult = document.getElementById("wpm-result");
+  const timerModeSelect = document.getElementById("timerMode"); // Selector del modo
 
   overlay.classList.add("hidden");
 
@@ -120,20 +121,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Iniciar el temporizador
   function startTimer() {
-    timerElement.textContent = timer;
-
-    timerInterval = setInterval(() => {
-      timer--;
+    if (timerModeSelect.value === "timed") { // Solo iniciar el temporizador si está en el modo cronometrado
       timerElement.textContent = timer;
 
-      if (timer <= 0) {
-        clearInterval(timerInterval);
-        timer = 0;
+      timerInterval = setInterval(() => {
+        timer--;
         timerElement.textContent = timer;
-        calculateWPM();
-        showCompletionOverlay();
-      }
-    }, 1000);
+
+        if (timer <= 0) {
+          clearInterval(timerInterval);
+          timer = 0;
+          timerElement.textContent = timer;
+          calculateWPM();
+          showCompletionOverlay();
+        }
+      }, 1000);
+    } else {
+      timerElement.textContent = "Modo libre"; // Modo libre, no temporizador
+      clearInterval(timerInterval); // Detener el temporizador
+    }
   }
 
   // Restablecer el temporizador
@@ -198,6 +204,39 @@ document.addEventListener("DOMContentLoaded", function () {
     hideCompletionOverlay();
   });
 
+  // Detectar el cambio en el selector de modo
+  timerModeSelect.addEventListener("change", function () {
+    resetTimer();
+  });
+
   loadCodeFragment();
-  startTimer();
+  startTimer(); // Inicializamos el temporizador al cargar
 });
+
+const toggleButton = document.getElementById("toggleMode");
+const body = document.body;
+
+// Verificar si el modo claro está guardado en localStorage
+if (localStorage.getItem("darkMode") === "disabled") {
+  body.classList.add("light-mode"); // Activar modo claro por defecto
+  toggleButton.textContent = "Activar Modo Oscuro"; // Cambiar texto del botón
+} else {
+  body.classList.add("dark-mode"); // Activar modo oscuro por defecto
+  toggleButton.textContent = "Activar Modo Claro"; // Cambiar texto del botón
+}
+
+toggleButton.addEventListener("click", function () {
+  // Alternar la clase "dark-mode" y "light-mode"
+  if (body.classList.contains("dark-mode")) {
+    body.classList.remove("dark-mode");
+    body.classList.add("light-mode");
+    toggleButton.textContent = "Activar Modo Oscuro"; // Texto para el modo claro
+    localStorage.setItem("darkMode", "disabled"); // Guardar preferencia del modo claro
+  } else {
+    body.classList.remove("light-mode");
+    body.classList.add("dark-mode");
+    toggleButton.textContent = "Activar Modo Claro"; // Texto para el modo oscuro
+    localStorage.setItem("darkMode", "enabled"); // Guardar preferencia del modo oscuro
+  }
+});
+

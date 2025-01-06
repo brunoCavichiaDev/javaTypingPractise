@@ -9,22 +9,32 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/theme/dracula.min.css">
 </head>
 <body>
+  <div id="timerModeContainer">
+    <select id="timerMode">
+      <option value="timed">Modo Cronometrado</option>
+      <option value="free">Modo Libre</option>
+    </select>
+  </div>
+
   <div class="typing-container">
-  <h1 data-text="Mejora tu velocidad tipeando Java">Mejora tu velocidad tipeando Java</h1>
-</div>
+    <h1 data-text="Mejora tu velocidad tipeando Java">Mejora tu velocidad tipeando Java</h1>
+  </div>
+
   <div id="challenge">
     <div id="timer">15</div>
     <div id="code-sample-visible"></div>
     <textarea id="code-sample"></textarea>
-
     <p id="result"></p>
-  
+  </div>
+
+  <div id="modeSwitcher">
+    <button id="toggleMode">Activar Modo Oscuro</button>
   </div>
 
   <!-- Superposición de finalización -->
   <div id="completion-overlay" class="hidden">
     <div id="completion-modal" class="hidden">
-      <h2>¡Tiempo terminado!</h2 >
+      <h2>¡Tiempo terminado!</h2>
       <p id="wpm-result">Tu velocidad: 0 WPM</p>
       <button id="continue-btn">Continuar</button>
     </div>
