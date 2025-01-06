@@ -6,26 +6,24 @@ document.addEventListener("DOMContentLoaded", function () {
   let correctWords = 0;
   let incorrectWords = 0;
   let startTime = null;
-  let timer = 15;
+  let timer = 30;
   let timerInterval = null;
-  let loadingGist = false; // Evitar que se cargue un Gist mientras ya está en proceso
-  let retries = 5; // Número de intentos para cargar el Gist
+  let loadingGist = false;
+  let retries = 5;
 
   const overlay = document.getElementById("completion-overlay");
   const timerElement = document.getElementById("timer");
   const resultElement = document.getElementById("result");
   const continueButton = document.getElementById("continue-btn");
   const wpmResult = document.getElementById("wpm-result");
-  const timerModeSelect = document.getElementById("timerMode"); // Selector del modo
+  const timerModeSelect = document.getElementById("timerMode");
 
   overlay.classList.add("hidden");
 
-  // Función para limpiar el código (quitar espacios innecesarios)
   function cleanCode(code) {
     return code.trim().replace(/\s+/g, " ").replace(/\r/g, "");
   }
 
-  // NUEVA FUNCIÓN: Resaltar caracteres incorrectos
   function highlightErrors(sample, userInput) {
     let highlighted = "";
     for (let i = 0; i < sample.length; i++) {
@@ -43,9 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
     return highlighted;
   }
 
-  // Intentar cargar el código desde el Gist con un número máximo de intentos
   function loadCodeFragment() {
-    if (loadingGist || retries <= 0) return; // Evitar múltiples peticiones al mismo tiempo
+    if (loadingGist || retries <= 0) return;
 
     loadingGist = true;
     fetch(gistUrl)
@@ -56,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return response.json();
       })
       .then((data) => {
-        retries = 5; // Resetear los intentos después de una carga exitosa
+        retries = 5;
         loadingGist = false;
         if (data.files["codeJava.java"]) {
           const codeSampleText = data.files["codeJava.java"].content;
@@ -83,8 +80,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
           totalWords = cleanCode(selectedLines).split(/\s+/).length;
 
-          codeMirror.setValue(""); // Limpiar el editor
-          codeMirror.off("change"); // Remover event listener anterior
+          codeMirror.setValue("");
+          codeMirror.off("change");
           codeMirror.on("change", function () {
             const userInput = codeMirror.getValue().trim();
             const cleanedCodeSample = cleanCode(selectedLines);
@@ -92,27 +89,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (cleanedUserInput === "") {
               resultElement.innerText = "";
-              resultElement.classList.remove('correct-feedback'); // Eliminar la clase de éxito
-              resultElement.style.visibility = 'hidden'; // Ocultar el contenedor de resultados
+              resultElement.classList.remove('correct-feedback');
+              resultElement.style.visibility = 'hidden';
               return;
             }
 
-            // INTEGRACIÓN: Resaltar caracteres incorrectos
             const highlightedHTML = highlightErrors(cleanedCodeSample, cleanedUserInput);
-            resultElement.innerHTML = highlightedHTML; // Mostrar el resultado con resaltado
+            resultElement.innerHTML = highlightedHTML;
             resultElement.style.visibility = 'visible';
 
             if (cleanedUserInput === cleanedCodeSample) {
               resultElement.innerText = "¡Correcto! Bien hecho.";
-              resultElement.classList.add('correct-feedback'); // Añadir clase para el éxito
-              resultElement.style.visibility = 'visible'; // Mostrar el contenedor de resultados
+              resultElement.classList.add('correct-feedback');
+              resultElement.style.visibility = 'visible';
 
               setTimeout(() => {
-                loadCodeFragment(); // Cargar nuevo fragmento de código
-                codeMirror.setValue(""); // Limpiar el editor
-                resultElement.classList.remove('correct-feedback'); // Eliminar la clase después de la animación
-                resultElement.style.visibility = 'hidden'; // Ocultar el contenedor después de la animación
-              }, 2000); // Esperar 2 segundos antes de quitar la clase
+                loadCodeFragment();
+                codeMirror.setValue("");
+                resultElement.classList.remove('correct-feedback');
+                resultElement.style.visibility = 'hidden';
+              }, 2000);
             }
           });
         } else {
@@ -124,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
         retries--;
         if (retries > 0) {
           console.log(`Reintentando... intentos restantes: ${retries}`);
-          setTimeout(loadCodeFragment, 2000); // Reintentar después de 2 segundos
+          setTimeout(loadCodeFragment, 2000);
         } else {
           resultElement.innerText = "Error al cargar el código: " + error.message;
           loadingGist = false;
@@ -132,9 +128,8 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  // Iniciar el temporizador
   function startTimer() {
-    if (timerModeSelect.value === "timed") { // Solo iniciar el temporizador si está en el modo cronometrado
+    if (timerModeSelect.value === "timed") {
       timerElement.textContent = timer;
       startTime = Date.now();
 
@@ -151,12 +146,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }, 1000);
     } else {
-      timerElement.textContent = "Modo libre"; // Modo libre, no temporizador
-      clearInterval(timerInterval); // Detener el temporizador
+      timerElement.textContent = "Modo libre";
+      clearInterval(timerInterval);
     }
   }
 
-  // Restablecer el temporizador
   function resetTimer() {
     clearInterval(timerInterval);
     timer = 15;
@@ -164,7 +158,6 @@ document.addEventListener("DOMContentLoaded", function () {
     startTimer();
   }
 
-  // Restablecer WPM
   function calculateWPM() {
     const elapsedTime = (Date.now() - startTime) / 60000;
     const editorContent = codeMirror.getValue().trim();
@@ -213,42 +206,35 @@ document.addEventListener("DOMContentLoaded", function () {
     hideCompletionOverlay();
   });
 
-  // Detectar el cambio en el selector de modo
   timerModeSelect.addEventListener("change", function () {
     resetTimer();
   });
 
-  loadCodeFragment(); // Cargar el fragmento de código al inicio
-  startTimer(); // Inicializamos el temporizador al cargar
+  loadCodeFragment();
+  startTimer();
 
-  // Cambio de modo claro/oscuro
   const toggleButton = document.getElementById("toggleMode");
   const body = document.body;
 
-  // Verificar si el modo claro está guardado en localStorage
   if (localStorage.getItem("darkMode") === "disabled") {
-    body.classList.add("light-mode"); // Activar modo claro por defecto
-    toggleButton.textContent = "Activar Modo Oscuro"; // Cambiar texto del botón
+    body.classList.add("light-mode");
+    toggleButton.textContent = "Activar Modo Oscuro";
   } else {
-    body.classList.add("dark-mode"); // Activar modo oscuro por defecto
-    toggleButton.textContent = "Activar Modo Claro"; // Cambiar texto del botón
+    body.classList.add("dark-mode");
+    toggleButton.textContent = "Activar Modo Claro";
   }
 
   toggleButton.addEventListener("click", function () {
-    // Alternar la clase "dark-mode" y "light-mode"
     if (body.classList.contains("dark-mode")) {
       body.classList.remove("dark-mode");
       body.classList.add("light-mode");
-      toggleButton.textContent = "Activar Modo Oscuro"; // Texto para el modo claro
-      localStorage.setItem("darkMode", "disabled"); // Guardar preferencia del modo claro
+      toggleButton.textContent = "Activar Modo Oscuro";
+      localStorage.setItem("darkMode", "disabled");
     } else {
       body.classList.remove("light-mode");
       body.classList.add("dark-mode");
-      toggleButton.textContent = "Activar Modo Claro"; // Texto para el modo oscuro
-      localStorage.setItem("darkMode", "enabled"); // Guardar preferencia del modo oscuro
+      toggleButton.textContent = "Activar Modo Claro";
+      localStorage.setItem("darkMode", "enabled");
     }
   });
 });
-
-
-

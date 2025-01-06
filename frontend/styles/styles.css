@@ -1,6 +1,3 @@
-/* Estilos generales */
-
-
 body {
   font-family: 'Courier New', Courier, monospace;
   background-color: #1e1e1e;
@@ -12,25 +9,22 @@ body {
   height: max-content;
   transition: background-color 0.3s ease, color 0.3s ease;
   text-align: center;
-  overflow: hidden; /* Evitar que se desborde por el contenido */
-
-  
-  
+  overflow: hidden;
 }
 
 @media (max-width: 600px) {
   body {
-    font-size: 14px; /* Reducir el tamaño de fuente */
+    font-size: 14px;
   }
 
   #completion-modal {
-    width: 90%; /* Hacer el modal más pequeño */
+    width: 90%;
     padding: 15px;
   }
 
   #code-sample-visible {
     font-size: 14px;
-    white-space: pre-wrap; /* Permite el salto de línea en el código */
+    white-space: pre-wrap;
   }
 
   #timer {
@@ -38,7 +32,7 @@ body {
   }
 
   .result, .correct-feedback {
-    font-size: 14px; /* Reducir el tamaño del texto */
+    font-size: 14px;
   }
 
   .button-container {
@@ -60,7 +54,6 @@ body {
   }
 }
 
-/* Media Query para pantallas medianas (tablets) */
 @media (max-width: 768px) {
   #completion-modal {
     width: 80%;
@@ -75,7 +68,6 @@ body {
   }
 }
 
-/* Estilos para pantallas grandes (desktops) */
 @media (min-width: 769px) {
   #completion-modal {
     width: 50%;
@@ -89,15 +81,15 @@ body {
 h1 {
   font-size: 2.5rem;
   margin: 15px;
-  display: inline-block; /* Asegura que el contenedor se ajuste al contenido */
+  display: inline-block;
   overflow: hidden;
   white-space: nowrap;
   position: relative;
-  color: transparent; /* Hacemos el texto transparente para el gradiente */
-  border-right: 0.15em solid #fff; /* Cursor de tipeo */
+  color: transparent;
+  border-right: 0.15em solid #fff;
   animation: 
-    typing 4s steps(70) 0.5s forwards, /* Animación typing */
-    cursor 0.95s step-end infinite alternate; /* Animación cursor */
+    typing 4s steps(70) 0.5s forwards,
+    cursor 0.95s step-end infinite alternate;
 }
 
 h1::before {
@@ -107,18 +99,15 @@ h1::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #ffffffa4, #acaaaaa4, #ffeb3b); /* Fondo de gradiente */
-  background-size: 200% 100%; /* Necesario para el movimiento */
+  background: linear-gradient(90deg, #ffffffa4, #acaaaaa4, #ffeb3b);
+  background-size: 200% 100%;
   background-position: 100% 0;
-  -webkit-background-clip: text; /* Para navegadores WebKit */
-  background-clip: text; /* Para Firefox */
-  animation: shine 30s linear infinite; /* Animación shine */
-  color: transparent; /* Aseguramos que el texto sea transparente */
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shine 30s linear infinite;
+  color: transparent;
 }
 
-
-
-/* Animación de shine */
 @keyframes shine {
   0% {
     background-position: 200% 0;
@@ -131,24 +120,21 @@ h1::before {
   }
 }
 
-/* Animaciones de texto */
 @keyframes typing {
   from {
     width: 0;
   }
   to {
-    width: 100%; /* El ancho se ajusta al contenido del texto */
+    width: 100%;
   }
 }
 
 @keyframes cursor {
   50% {
-    border-color: transparent; /* Parpadeo del cursor */
+    border-color: transparent;
   }
 }
 
-
-/* Resto de los estilos */
 #challenge {
   width: 100%;
   max-width: 800px;
@@ -156,7 +142,7 @@ h1::before {
   padding: 10px;
   background: linear-gradient(145deg, #2a2a2a, #383838);
   border-radius: 10px;
-  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4); /* Sombra externa para profundidad */
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);
 }
 
 #code-sample-visible {
@@ -172,7 +158,7 @@ h1::before {
   word-wrap: break-word;
   margin-bottom: 10px;
   text-align: left;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Sombra para profundidad */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 textarea#code-sample {
@@ -184,49 +170,41 @@ textarea#code-sample {
   border-radius: 8px;
   padding: 12px;
   width: 100%;
-  min-height: 300px; /* Aumentar el tamaño */
+  min-height: 300px;
   resize: none;
   outline: none;
-  margin-top: -210px; /* Ajustar para que se solape bien con el código visible */
+  margin-top: -210px;
   text-align: left;
-  white-space: pre-wrap; /* Mantener el formato */
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4); /* Sombra para profundidad */
+  white-space: pre-wrap;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
 }
-
-
-
 
 p#result {
   font-size: 1.5rem;
-  margin-top: 40px; /* Aumentar el margen superior para separarlo del contenido anterior */
-  margin-bottom: 20px; /* Asegurar que haya espacio debajo del mensaje */
+  margin-top: 40px;
+  margin-bottom: 20px;
   font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6); /* Sombra para mejor legibilidad */
-  
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
 
-
-
-/* Efecto de luz en texto correcto */
 .correct-feedback {
-  background-color: rgba(76, 175, 80, 0.5); /* Verde claro */
-  box-shadow: 0 4px 6px rgba(76, 175, 80, 0.3); /* Sombra para profundidad */
+  background-color: rgba(76, 175, 80, 0.5);
+  box-shadow: 0 4px 6px rgba(76, 175, 80, 0.3);
 }
 
 .incorrect-feedback {
-  background-color: rgba(244, 67, 54, 0.5); /* Rojo claro */
-  box-shadow: 0 4px 6px rgba(244, 67, 54, 0.3); /* Sombra para profundidad */
+  background-color: rgba(244, 67, 54, 0.5);
+  box-shadow: 0 4px 6px rgba(244, 67, 54, 0.3);
 }
 
 #timer {
   font-size: 2em;
   text-align: center;
   margin-bottom: 10px;
-  color: #ffeb3b; /* Color dorado para el temporizador */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Sombra para darle profundidad */
+  color: #ffeb3b;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
 }
 
-/* Estilo general del overlay */
 #completion-overlay {
   position: fixed;
   z-index: 1000;
@@ -234,23 +212,22 @@ p#result {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro */
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
-  visibility: hidden; /* Inicialmente oculto */
+  visibility: hidden;
   opacity: 0;
-  transition: visibility 0s, opacity 0.5s linear; /* Animación suave */
+  transition: visibility 0s, opacity 0.5s linear;
 }
 
-/* Estilo del modal de finalización */
 #completion-modal {
   background-color: rgb(48, 48, 47);
   z-index: 1001;
   color: yellow;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra para profundidad */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   text-align: center;
   max-width: 90%;
   transition: transform 0.3s ease-out;
@@ -259,16 +236,14 @@ p#result {
 }
 
 #completion-modal.show {
-  transform: scale(1); /* Animación de aparición */
+  transform: scale(1);
 }
 
-/* Cuando el overlay y el modal deben estar visibles */
 #completion-overlay:not(.hidden) {
   visibility: visible;
   opacity: 1;
 }
 
-/* Sombra para el hover de botones */
 button {
   background-color: #333;
   color: #fff;
@@ -279,25 +254,16 @@ button {
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-
-
-/* Contenedor independiente del mensaje de éxito/error */
-/* Contenedor independiente del mensaje de éxito/error */
-
-/* Animación de éxito (Correcto) */
 .correct-feedback {
   color: rgb(95, 230, 95);
   animation: fadeInOut 2s ease-out forwards;
 }
 
-/* Mensaje de error (Incorrecto) */
 .error-feedback {
   color: yellow;
   animation: fadeInOut 2s ease-out forwards;
 }
 
-
-/* Animación de entrada y salida para el éxito */
 @keyframes fadeInOut {
   0% {
     opacity: 0;
@@ -310,27 +276,20 @@ button {
   }
 }
 
-
-/* Estilos generales para el contenedor del selector */
-/* Contenedor del selector */
 #timerModeContainer {
   position: fixed;
   bottom: 20px;
   left: 20px;
   margin: 0;
   z-index: 1000;
-  width: 250px; /* Limitar el ancho */
+  width: 250px;
   display: block;
-  text-align: justify; /* Justificar el texto */
-  line-height: 1.5; /* Aumentar el interlineado para mejor legibilidad */
-  white-space: normal; /* Asegura que el texto se divida en varias líneas */
-  word-wrap: break-word; /* Permite que el texto largo se ajuste */
+  text-align: justify;
+  line-height: 1.5;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
-/* Justificar el texto del selector de modo */
-
-
-/* Estilos generales del selector */
 #timerMode {
   padding: 10px;
   font-size: 16px;
@@ -338,19 +297,16 @@ button {
   border: 1px solid #ccc;
   background-color: #333;
   color: yellow;
-  width: 100%; /* Asegura que el selector ocupe todo el espacio disponible */
-  box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Estilo cuando el selector está enfocado */
 #timerMode:focus {
   outline: none;
   border-color: #6c5ce7;
   background-color: #444;
 }
 
-
-/* Estilo para el botón de continuar, si es necesario */
 #continue-btn {
   margin-top: 20px;
   padding: 10px 20px;
@@ -363,17 +319,15 @@ button {
   transition: background-color 0.3s;
 }
 
-/* Efecto cuando el botón está siendo presionado */
 #continue-btn:active {
   background-color: #5a4bc3;
 }
 
 body.light-mode {
-  background-color: #fff; /* Fondo claro */
-  color: #333; /* Texto oscuro */
+  background-color: #fff;
+  color: #333;
 }
 
-/* Estilo para el botón */
 #modeSwitcher {
   position: fixed;
   top: 20px;
@@ -398,43 +352,29 @@ body.light-mode {
 #toggleMode:focus {
   outline: none;
 }
+
 body.light-mode #toggleMode {
-  background-color: #fff; /* Fondo blanco para el botón en modo claro */
-  color: #333; /* Texto oscuro */
+  background-color: #fff;
+  color: #333;
 }
 
 body.light-mode #toggleMode:hover {
-  background-color: #f0f0f0; /* Fondo ligeramente más claro al pasar el ratón en modo claro */
+  background-color: #f0f0f0;
 }
 
 div.CodeMirror.cm-s-dracula{
   height: 250px;
 }
 
-
-
-
-
 .correct {
   color: green;
   font-size: 12px;
-  font-family: 'Poppins', sans-serif; /* Fuente más linda */
+  font-family: 'Poppins', sans-serif;
 }
 
 .incorrect {
   color: red;
   text-decoration:none;
-  font-family: 'Poppins', sans-serif; /* Fuente más linda */
+  font-family: 'Poppins', sans-serif;
   font-size: 12px;
- 
-
-
-
 }
-
-
-
-
-
-
-
